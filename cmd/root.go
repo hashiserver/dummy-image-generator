@@ -17,16 +17,23 @@ var rootCmd = &cobra.Command{
 		// flag読み取り
 		width, _ := cmd.Flags().GetInt("width")
 		if width == 0 {
-			log.Println("-wi is required. Please enter a width")
-			os.Exit(1)
-		}
-		height, _ := cmd.Flags().GetInt("height")
-		if height == 0 {
-			log.Println("-he is required. Please enter a height")
+			log.Println("-w is required. Please enter a width")
 			os.Exit(1)
 		}
 
-		utils.CreatePNG(width, height)
+		height, _ := cmd.Flags().GetInt("height")
+		if height == 0 {
+			log.Println("-t is required. Please enter a height")
+			os.Exit(1)
+		}
+
+		extension, _ := cmd.Flags().GetString("extension")
+		if !utils.IsExtension(extension) {
+			log.Println("Only 'jpg', 'jpeg', 'png', and 'gif' are allowed with the -e option")
+			os.Exit(1)
+		}
+
+		utils.CreateImageFile(width, height, extension)
 	},
 }
 
@@ -40,4 +47,5 @@ func Execute() {
 func init() {
 	rootCmd.Flags().IntP("width", "w", 0, "Image Width")
 	rootCmd.Flags().IntP("height", "t", 0, "Image Height")
+	rootCmd.Flags().StringP("extension", "e", "", "Image Extension")
 }

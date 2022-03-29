@@ -1,4 +1,8 @@
 .vscode
 .DS_Store
 dummy-image-generator
-image.png
+
+*.png
+*.jpg
+*.jpeg
+*.gif

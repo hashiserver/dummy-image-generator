@@ -12,6 +12,7 @@ VERSION:
 GLOBAL OPTIONS:
    --width, -w      width ex.1920
    --height, -t     height ex.1080
+   --extension, -e   extension ex. jpg, jpeg, png, gif
 ```
 
 ## Installation
