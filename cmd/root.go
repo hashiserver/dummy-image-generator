@@ -47,5 +47,5 @@ func Execute() {
 func init() {
 	rootCmd.Flags().IntP("width", "w", 0, "Image Width")
 	rootCmd.Flags().IntP("height", "t", 0, "Image Height")
-	rootCmd.Flags().StringP("extension", "e", "", "Image Extension")
+	rootCmd.Flags().StringP("extension", "e", "png", "Image Extension")
 }

@@ -10,9 +10,9 @@ USAGE:
 VERSION:
    0.0.1
 GLOBAL OPTIONS:
-   --width, -w      width ex.1920
-   --height, -t     height ex.1080
-   --extension, -e   extension ex. jpg, jpeg, png, gif
+   --width, -w       width
+   --height, -t      height
+   --extension, -e   extension. default png.
 ```
 
 ## Installation
