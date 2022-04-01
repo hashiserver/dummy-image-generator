@@ -6,13 +6,14 @@
 NAME:
    dummy-image-generator
 USAGE:
-   dummy-image-generator [global options]
+   dummy-image-generator [options]
 VERSION:
    0.0.1
-GLOBAL OPTIONS:
-   --width, -w       width.
-   --height, -t      height.
-   --extension, -e   extension. default png.
+OPTIONS:
+   -e, --extension string   Image Extension (default "png")
+   -t, --height int         Image Height
+   -h, --help               help for dummy
+   -w, --width int          Image Width
 ```
 
 ## EXAMPLE

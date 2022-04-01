@@ -1,54 +1,29 @@
-package utils
+package lib
 
 import (
-	"fmt"
 	"image"
 	"image/color"
-	"image/gif"
-	"image/jpeg"
-	"image/png"
-	"log"
-	"os"
 	"strconv"
 
 	"github.com/golang/freetype/truetype"
+	"github.com/hashiserver/dummy-image-generator/model"
 	"golang.org/x/image/font"
 	"golang.org/x/image/font/gofont/gobold"
 	"golang.org/x/image/math/fixed"
 )
 
-func CreateImageFile(width int, height int, extension string) {
-	img := image.NewRGBA(image.Rect(0, 0, width, height))
+// 画像を生成
+func GenerateImage(option model.Option) (*image.RGBA, error) {
+	img := image.NewRGBA(image.Rect(0, 0, option.Width, option.Height))
 
 	// gray
 	fillRect(img, color.RGBA{128, 128, 128, 255})
 
-	f, _ := os.Create("./dummy_" + strconv.Itoa(width) + "_" + strconv.Itoa(height) + "." + extension)
-	defer f.Close()
-
 	// 画像中央にwidth と heightを記載
-	drawString(img, width, height)
+	drawString(img, option.Width, option.Height)
 
-	switch extension {
-	case "jpg", "jpeg":
-		err := jpeg.Encode(f, img, &jpeg.Options{Quality: 100})
-		if err != nil {
-			log.Println(err)
-			os.Exit(1)
-		}
-	case "gif":
-		err := gif.Encode(f, img, nil)
-		if err != nil {
-			log.Println(err)
-			os.Exit(1)
-		}
-	default:
-		err := png.Encode(f, img)
-		if err != nil {
-			log.Println(err)
-			os.Exit(1)
-		}
-	}
+	return img, nil
+
 }
 
 // 画像を単色に染める
@@ -61,15 +36,15 @@ func fillRect(img *image.RGBA, col color.Color) {
 	}
 }
 
-func drawString(img *image.RGBA, width int, height int) {
+// 画像に文字を追加
+func drawString(img *image.RGBA, width int, height int) error {
 	fontstr := strconv.Itoa(width) + " x " + strconv.Itoa(height)
 	fontsize := 48.0
 
 	// フォントの読み込み
 	ft, err := truetype.Parse(gobold.TTF)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
+		return err
 	}
 
 	opt := truetype.Options{Size: fontsize}
@@ -81,17 +56,10 @@ func drawString(img *image.RGBA, width int, height int) {
 		Face: face,
 		Dot:  fixed.Point26_6{},
 	}
+	// 中央に配置
 	d.Dot.X = (fixed.I(width) - d.MeasureString(fontstr)) / 2
 	d.Dot.Y = fixed.I((height / 2) + int(fontsize/2))
 
 	d.DrawString(fontstr)
-}
-
-func IsExtension(extension string) bool {
-	switch extension {
-	case "jpg", "jpeg", "gif", "png":
-		return true
-	default:
-		return false
-	}
+	return nil
 }
